@@ -24,6 +24,7 @@ npm run dev
 - style: 不影响功能点的提交(样式...)
 - fit: 修复bug
 - refactor: 代码重构
+- delete: 删除
 
 ## 开发协作资料
 1. [图标插画库](https://www.iconfont.cn/)
