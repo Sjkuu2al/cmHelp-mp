@@ -13,7 +13,14 @@ npm run dev
 ```
 
 ## 项目依赖
-- node 
+- node 16.14.0
 - uniapp
 - vue3
 - vite
+
+## commit类型
+- docs: 仅对文档进行变更
+- feat: 新增功能
+- style: 不影响功能点的提交(样式...)
+- fit: 修复bug
+- refactor: 代码重构
