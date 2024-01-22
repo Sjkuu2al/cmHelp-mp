@@ -24,3 +24,7 @@ npm run dev
 - style: 不影响功能点的提交(样式...)
 - fit: 修复bug
 - refactor: 代码重构
+
+## 开发流程遇到问题及解决方案
+1. 本地修改后无法正常提交GitHub【报错信息：ssh: connect to host github.com port 22: Connection timed out】
+    - [解决方案](https://docs.github.com/zh/authentication/troubleshooting-ssh/using-ssh-over-the-https-port)
