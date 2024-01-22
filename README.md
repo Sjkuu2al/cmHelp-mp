@@ -25,6 +25,9 @@ npm run dev
 - fit: 修复bug
 - refactor: 代码重构
 
+## 开发协作资料
+1. [图标插画库](https://www.iconfont.cn/)
+
 ## 开发流程遇到问题及解决方案
 1. 本地修改后无法正常提交GitHub【报错信息：ssh: connect to host github.com port 22: Connection timed out】
     - [解决方案](https://docs.github.com/zh/authentication/troubleshooting-ssh/using-ssh-over-the-https-port)
