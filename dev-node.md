@@ -13,6 +13,7 @@ npx degit dcloudio/uni-preset-vue#vite-ts my-vue3-project
 4.安装初始依赖
 pnpm install
 
-5.运行
-npm run dev
+5.安装eslint
+pnpm install eslint eslint-plugin-vue vue-eslint-parser
+
 ```

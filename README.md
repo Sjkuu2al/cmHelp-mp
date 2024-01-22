@@ -25,6 +25,7 @@ npm run dev
 - fit: 修复bug
 - refactor: 代码重构
 - delete: 删除
+- create: 新增依赖或素材图...
 
 ## 开发协作资料
 1. [图标插画库](https://www.iconfont.cn/)
