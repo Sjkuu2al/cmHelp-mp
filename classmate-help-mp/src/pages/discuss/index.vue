@@ -1,5 +1,5 @@
 <template>
-  <view class="index"> DISCUSSS </view>
+  <view class="index"></view>
 </template>
 
 <script setup lang="ts"></script>
