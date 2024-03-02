@@ -11,6 +11,24 @@
 			"style": {
 				"navigationBarTitleText": "我的"
 			}
+		},
+		{
+			"path": "pages/shop/index",
+			"style": {
+				"navigationBarTitleText": "二手置换"
+			}
+		},
+		{
+			"path": "pages/discuss/index",
+			"style": {
+				"navigationBarTitleText": "校园论坛"
+			}
+		},
+		{
+			"path": "pages/notice/index",
+			"style": {
+				"navigationBarTitleText": "公告"
+			}
 		}
 	],
 	"globalStyle": {

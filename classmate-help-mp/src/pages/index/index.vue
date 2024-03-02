@@ -1,8 +1,8 @@
 <template>
   <view class="index">
-    <toCard :introduction="noticeIntro" :bgImage="notice" />
-    <toCard :introduction="exchangeIntro" :bgImage="exchange" />
-    <toCard :introduction="discussIntro" :bgImage="discuss" />
+    <toCard :introduction="noticeIntro" :bgImage="notice" toUrl="/pages/notice/index"/>
+    <toCard :introduction="exchangeIntro" :bgImage="exchange" toUrl="/pages/shop/index"/>
+    <toCard :introduction="discussIntro" :bgImage="discuss" toUrl="/pages/discuss/index"/>
     <toCard :introduction="futureIntro" :bgImage="future" :isTo="false" />
   </view>
 </template>
