@@ -13,8 +13,8 @@
       <div class="count"></div>
     </div>
     <div class="to-list">
-      <div class="to-btn">商品管理</div>
-      <div class="to-btn">帖子管理</div>
+      <div class="to-btn" @click="toPage('/pages/shopManager/index')">商品管理</div>
+      <div class="to-btn" @click="toPage('/pages/discussManager/index')">帖子管理</div>
     </div>
     <div class="list">
       <div class="option">
@@ -41,7 +41,11 @@
   </view>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const toPage = (url: String) => {
+  uni.navigateTo({ url });
+};
+</script>
 
 <style lang="scss" scoped>
 .mine {
