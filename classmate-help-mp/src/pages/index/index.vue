@@ -27,7 +27,7 @@ const noticeIntro = {
 };
 const futureIntro = {
   title: "敬请期待",
-  content: "后续功能开发中...",
+  content: "更多功能开发中...",
 };
 </script>
 
