@@ -1,23 +1,38 @@
 <template>
-  <div class="to-card">
+  <div class="to-card" @click="toPage">
     <image class="background" :src="bgImage"></image>
     <div class="introduction">
-      <div class="title">{{introduction.title}}</div>
-      <div class="content">{{introduction.content}}</div>
+      <div class="title">{{ introduction.title }}</div>
+      <div class="content">{{ introduction.content }}</div>
+      <div class="to" v-if="isTo">
+        <image src="@/static/goto.png" />
+      </div>
     </div>
   </div>
 </template>
-
 <script setup lang="ts">
+import { defineProps } from "vue";
+
 const props = defineProps({
   bgImage: {
     type: String,
   },
-  introduction:{
+  introduction: {
     type: Object,
-    required: true
-  }
+    required: true,
+  },
+  isTo: {
+    type: Boolean,
+    default: true,
+  },
+  toUrl: {
+    type: String,
+  },
 });
+
+const toPage = () => {
+  if (props.isTo && props.toUrl) uni.navigateTo({ url: props.toUrl });
+};
 </script>
 
 <style lang="scss" scoped>
@@ -44,11 +59,23 @@ const props = defineProps({
       padding-top: 20rpx;
       padding-bottom: 30rpx;
     }
-    .content{
+    .content {
       font-size: 24rpx;
       widows: 60rpx;
       word-wrap: break-word;
-      color:gray
+      color: gray;
+    }
+    .to {
+      flex-grow: 1;
+      position: relative;
+      image {
+        position: absolute; /* 将 .b 绝对定位 */
+        bottom: 0; /* 距离 .a 底部的距离 */
+        right: 0; /* 距离 .a 右侧的距离 */
+        height: 40rpx;
+        width: 40rpx;
+        padding: 40rpx;
+      }
     }
   }
 }

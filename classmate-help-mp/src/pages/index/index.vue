@@ -3,7 +3,7 @@
     <toCard :introduction="noticeIntro" :bgImage="notice" />
     <toCard :introduction="exchangeIntro" :bgImage="exchange" />
     <toCard :introduction="discussIntro" :bgImage="discuss" />
-    <toCard :introduction="futureIntro" :bgImage="future" />
+    <toCard :introduction="futureIntro" :bgImage="future" :isTo="false" />
   </view>
 </template>
 
@@ -18,17 +18,17 @@ const exchangeIntro = {
   content: "进行校园二手物品置换...",
 };
 const discussIntro = {
-   title: "校园论坛",
+  title: "校园论坛",
   content: "校园热点事件讨论区...",
-}
+};
 const noticeIntro = {
-   title: "公告列表",
+  title: "公告列表",
   content: "程序最新公告展示...",
-}
+};
 const futureIntro = {
-   title: "敬请期待",
+  title: "敬请期待",
   content: "后续功能开发中...",
-}
+};
 </script>
 
 <style lang="scss" scoped>
