@@ -1,41 +1,43 @@
 <template>
-  <view class="content">
-    <image class="logo" src="/static/logo.png" />
-    <view class="text-area">
-      <text class="title">{{ title }}</text>
-    </view>
+  <view class="index">
+    <toCard :introduction="noticeIntro" :bgImage="notice" />
+    <toCard :introduction="exchangeIntro" :bgImage="exchange" />
+    <toCard :introduction="discussIntro" :bgImage="discuss" />
+    <toCard :introduction="futureIntro" :bgImage="future" />
   </view>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-const title = ref('Hel123123lo')
+import toCard from "@/components/index/toCard.vue";
+import exchange from "@/static/exchange.png";
+import discuss from "@/static/discuss.png";
+import notice from "@/static/notice.png";
+import future from "@/static/future.png";
+const exchangeIntro = {
+  title: "二手置换",
+  content: "进行校园二手物品置换...",
+};
+const discussIntro = {
+   title: "校园论坛",
+  content: "校园热点事件讨论区...",
+}
+const noticeIntro = {
+   title: "公告列表",
+  content: "程序最新公告展示...",
+}
+const futureIntro = {
+   title: "敬请期待",
+  content: "后续功能开发中...",
+}
 </script>
 
-<style>
-.content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.logo {
-  height: 200rpx;
-  width: 200rpx;
-  margin-top: 200rpx;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 50rpx;
-}
-
-.text-area {
-  display: flex;
-  justify-content: center;
-}
-
-.title {
-  font-size: 36rpx;
-  color: #8f8f94;
+<style lang="scss" scoped>
+.index {
+  height: 90%;
+  padding: 70rpx;
+  display: grid;
+  grid-template-rows: repeat(4, 1fr);
+  grid-template-columns: 1fr;
+  gap: 50rpx;
 }
 </style>
