@@ -22,7 +22,7 @@
       <goodItem />
       <goodItem />
     </div>
-    <div class="createbtn"></div>
+    <div class="createbtn" @click="toCreate()">+</div>
   </view>
 </template>
 
@@ -30,6 +30,9 @@
 import { ref } from "vue";
 import goodItem from "@/components/shop/goodItem.vue";
 let keyword = ref("");
+let toCreate = () => {
+  uni.navigateTo({ url: "/pages/shopDetail/index?type=0" });
+};
 </script>
 
 <style lang="scss" scoped>
@@ -78,6 +81,11 @@ let keyword = ref("");
     background-color: white;
   }
   .createbtn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 30px;
+    color: white;
     position: fixed;
     top: 85%;
     left: 75%;
@@ -85,7 +93,7 @@ let keyword = ref("");
     width: 100rpx;
     border-radius: 100rpx;
     box-shadow: 10rpx 5rpx 10rpx rgb(232, 232, 232);
-    background-color: rgb(34, 116, 59);
+    background-color: rgb(145, 230, 170);
   }
 }
 </style>
