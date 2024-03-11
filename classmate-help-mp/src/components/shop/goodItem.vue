@@ -1,5 +1,5 @@
 <template>
-  <div class="item-box">
+  <div class="item-box" @click="openDetail()">
     <image src="@/static/i-book.png" />
     <div class="intro">
       <div class="title">数学书</div>
@@ -7,7 +7,11 @@
     </div>
   </div>
 </template>
-<script setup lang="ts"></script>
+<script setup lang="ts">
+let openDetail = () => {
+  uni.navigateTo({ url: "/pages/shopDetail/index?type=1&id=2" });
+};
+</script>
 
 <style lang="scss" scoped>
 .item-box {
