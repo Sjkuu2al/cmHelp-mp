@@ -9,7 +9,7 @@
 </template>
 <script setup lang="ts">
 let openDetail = () => {
-  uni.navigateTo({ url: "/pages/shopDetail/index?type=1&id=2" });
+  uni.navigateTo({ url: "/pages/shopDetail/index?type=0&id" });
 };
 </script>
 

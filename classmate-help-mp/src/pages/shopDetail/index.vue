@@ -48,7 +48,7 @@
     </div>
   </view>
   <view class="edit-page" v-else-if="type === '0'">
-    <form @submit="formSubmit" @reset="formReset">
+    <form @submit="formSubmit">
       <view class="edit-part">
         <view class="title">商品名</view>
         <input

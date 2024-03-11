@@ -54,6 +54,12 @@
 			"style": {
 				"navigationBarTitleText": "商品详情"
 			}
+		},
+		{
+			"path":"pages/discussDetail/index",
+			"style": {
+				"navigationBarTitleText": "帖子详情"
+			}
 		}
 	],
 	"globalStyle": {
