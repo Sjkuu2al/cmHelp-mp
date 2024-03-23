@@ -1,22 +1,22 @@
 <template>
   <view class="discuss-list">
-    <div
+    <view
       class="card"
       v-for="item in list"
       :key="item.id"
       @click="openDetail(item.id)"
     >
-      <div class="pUser">{{ item.pUser }}</div>
-      <div class="pContent">{{ item.pContent }}</div>
-      <div class="common">
+      <view class="pUser">{{ item.pUser }}</view>
+      <view class="pContent">{{ item.pContent }}</view>
+      <view class="common">
         <image src="@/static/i-common.png"></image>
-        <div class="common-count">{{ item.commonCount }}</div>
-      </div>
-      <!-- <div class="reply" v-for="(rep, idx) in item.replyArr" :key="idx">
-        <div class="rUser">{{ rep.rUser }}</div>
-        <div class="rContent">{{ rep.rContent }}</div>
-      </div> -->
-    </div>
+        <view class="common-count">{{ item.commonCount }}</view>
+      </view>
+      <!-- <view class="reply" v-for="(rep, idx) in item.replyArr" :key="idx">
+        <view class="rUser">{{ rep.rUser }}</view>
+        <view class="rContent">{{ rep.rContent }}</view>
+      </view> -->
+    </view>
   </view>
 </template>
 
@@ -50,7 +50,7 @@ let list = [
     commonCount: 19,
   },
 ];
-let openDetail = (id) => {
+let openDetail = (id: number) => {
   uni.navigateTo({ url: `/pages/discussDetail/index?id=${id}` });
 };
 </script>

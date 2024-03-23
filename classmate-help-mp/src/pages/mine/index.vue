@@ -1,43 +1,31 @@
 <template>
   <view class="mine">
-    <div class="card">
-      <div class="info">
-        <div class="left">
-          <div class="normal">Sikuu2al</div>
-          <div class="small">uid:1754951327</div>
-        </div>
-        <div class="right">
+    <view class="card">
+      <view class="info">
+        <view class="left">
+          <view class="normal">Sikuu2al</view>
+          <view class="small">uid:1754951327</view>
+        </view>
+        <view class="right">
           <image src="@/static/11.jpg"></image>
-        </div>
-      </div>
-      <div class="count"></div>
-    </div>
-    <div class="to-list">
-      <div class="to-btn" @click="toPage('/pages/shopManager/index')">商品管理</div>
-      <div class="to-btn" @click="toPage('/pages/discussManager/index')">帖子管理</div>
-    </div>
-    <div class="list">
-      <div class="option">
+        </view>
+      </view>
+      <view class="count"></view>
+    </view>
+    <view class="to-list">
+      <view class="to-btn" @click="toPage('/pages/shopManager/index')">
+        商品管理
+      </view>
+      <view class="to-btn" @click="toPage('/pages/discussManager/index')">
+        帖子管理
+      </view>
+    </view>
+    <view class="list">
+      <view class="option" @click="toPage('/pages/about/index')">
         <image src="@/static/i-about.png"></image>
-        <div class="tip">关于我们</div>
-      </div>
-      <div class="option">
-        <image src="@/static/i-about.png"></image>
-        <div class="tip">关于我们</div>
-      </div>
-      <div class="option">
-        <image src="@/static/i-about.png"></image>
-        <div class="tip">关于我们</div>
-      </div>
-      <div class="option">
-        <image src="@/static/i-about.png"></image>
-        <div class="tip">关于我们</div>
-      </div>
-      <div class="option">
-        <image src="@/static/i-about.png"></image>
-        <div class="tip">关于我们</div>
-      </div>
-    </div>
+        <view class="tip">关于我们</view>
+      </view>
+    </view>
   </view>
 </template>
 

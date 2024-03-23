@@ -1,32 +1,30 @@
 <template>
   <view class="discuss-page">
-    <div class="card">
-      <div class="intro">
-        <div class="title">高等数学第一册</div>
-        <div class="content">
-          大一学校统一购买的，很新没有什么笔记.
-        </div>
-      </div>
-    </div>
+    <view class="card">
+      <view class="intro">
+        <view class="title">高等数学第一册</view>
+        <view class="content"> 大一学校统一购买的，很新没有什么笔记. </view>
+      </view>
+    </view>
 
-    <div class="msg">
-      <div class="title">评论区</div>
-      <div class="msg-box">
-        <div class="user">sikuu</div>
-        <div class="content">我想要,可以商量价格吗?</div>
-        <div class="date">2023-05-11</div>
-      </div>
-      <div class="msg-box">
-        <div class="user">vivvd</div>
-        <div class="content">我的微信号是:148434123</div>
-        <div class="date">2023-03-12</div>
-      </div>
-      <div class="msg-box">
-        <div class="user">aasss</div>
-        <div class="content">不错哦</div>
-        <div class="date">2023-01-11</div>
-      </div>
-    </div>
+    <view class="msg">
+      <view class="title">评论区</view>
+      <view class="msg-box">
+        <view class="user">sikuu</view>
+        <view class="content">我想要,可以商量价格吗?</view>
+        <view class="date">2023-05-11</view>
+      </view>
+      <view class="msg-box">
+        <view class="user">vivvd</view>
+        <view class="content">我的微信号是:148434123</view>
+        <view class="date">2023-03-12</view>
+      </view>
+      <view class="msg-box">
+        <view class="user">aasss</view>
+        <view class="content">不错哦</view>
+        <view class="date">2023-01-11</view>
+      </view>
+    </view>
   </view>
 </template>
 

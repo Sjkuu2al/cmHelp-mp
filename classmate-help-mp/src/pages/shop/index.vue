@@ -1,28 +1,28 @@
 <template>
   <view class="shop-page">
-    <div class="top-filter">
-      <div class="search-box">
+    <view class="top-filter">
+      <view class="search-box">
         <input
           class="search-input"
           placeholder="请输入关键词"
           v-model="keyword"
         />
-      </div>
-      <div class="filter-box">
+      </view>
+      <view class="filter-box">
         <image src="@/static/i-book.png" />
         <image src="@/static/i-clothes.png" />
         <image src="@/static/i-phone.png" />
         <image src="@/static/i-hzp.png" />
-      </div>
-    </div>
-    <div class="shop-list">
+      </view>
+    </view>
+    <view class="shop-list">
       <goodItem />
       <goodItem />
       <goodItem />
       <goodItem />
       <goodItem />
-    </div>
-    <div class="createbtn" @click="toCreate()">+</div>
+    </view>
+    <view class="createbtn" @click="toCreate()">+</view>
   </view>
 </template>
 

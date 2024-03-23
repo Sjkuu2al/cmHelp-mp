@@ -1,14 +1,14 @@
 <template>
-  <div class="to-card" @click="toPage">
+  <view class="to-card" @click="toPage">
     <image class="background" :src="bgImage"></image>
-    <div class="introduction">
-      <div class="title">{{ introduction.title }}</div>
-      <div class="content">{{ introduction.content }}</div>
-      <div class="to" v-if="isTo">
+    <view class="introduction">
+      <view class="title">{{ introduction.title }}</view>
+      <view class="content">{{ introduction.content }}</view>
+      <view class="to" v-if="isTo">
         <image src="@/static/goto.png" />
-      </div>
-    </div>
-  </div>
+      </view>
+    </view>
+  </view>
 </template>
 <script setup lang="ts">
 import { defineProps } from "vue";

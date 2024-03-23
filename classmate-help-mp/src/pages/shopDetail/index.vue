@@ -1,14 +1,14 @@
 <template>
   <view class="detail-page" v-if="type === '1'">
-    <div class="card">
-      <div class="intro">
-        <div class="title">&nbsp;&nbsp;高等数学第一册</div>
-        <div class="content">
+    <view class="card">
+      <view class="intro">
+        <view class="title">&nbsp;&nbsp;高等数学第一册</view>
+        <view class="content">
           &nbsp;&nbsp;大一学校统一购买的，很新没有什么笔记.
-        </div>
-      </div>
-      <div class="coast">￥30</div>
-    </div>
+        </view>
+      </view>
+      <view class="coast">￥30</view>
+    </view>
     <swiper
       class="image-box"
       circular
@@ -28,24 +28,24 @@
       </swiper-item>
     </swiper>
 
-    <div class="msg">
-      <div class="title">评论区</div>
-      <div class="msg-box">
-        <div class="user">sikuu</div>
-        <div class="content">我想要,可以商量价格吗?</div>
-        <div class="date">2023-05-11</div>
-      </div>
-      <div class="msg-box">
-        <div class="user">vivvd</div>
-        <div class="content">我的微信号是:148434123</div>
-        <div class="date">2023-03-12</div>
-      </div>
-      <div class="msg-box">
-        <div class="user">aasss</div>
-        <div class="content">不错哦</div>
-        <div class="date">2023-01-11</div>
-      </div>
-    </div>
+    <view class="msg">
+      <view class="title">评论区</view>
+      <view class="msg-box">
+        <view class="user">sikuu</view>
+        <view class="content">我想要,可以商量价格吗?</view>
+        <view class="date">2023-05-11</view>
+      </view>
+      <view class="msg-box">
+        <view class="user">vivvd</view>
+        <view class="content">我的微信号是:148434123</view>
+        <view class="date">2023-03-12</view>
+      </view>
+      <view class="msg-box">
+        <view class="user">aasss</view>
+        <view class="content">不错哦</view>
+        <view class="date">2023-01-11</view>
+      </view>
+    </view>
   </view>
   <view class="edit-page" v-else-if="type === '0'">
     <form @submit="formSubmit">

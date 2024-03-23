@@ -1,15 +1,15 @@
 <template>
-  <div class="item-box" @click="openDetail()">
+  <view class="item-box" @click="openDetail()">
     <image src="@/static/i-book.png" />
-    <div class="intro">
-      <div class="title">数学书</div>
-      <div class="info">这是一本数学书</div>
-    </div>
-  </div>
+    <view class="intro">
+      <view class="title">数学书</view>
+      <view class="info">这是一本数学书</view>
+    </view>
+  </view>
 </template>
 <script setup lang="ts">
 let openDetail = () => {
-  uni.navigateTo({ url: "/pages/shopDetail/index?type=0&id" });
+  uni.navigateTo({ url: "/pages/shopDetail/index?type=1&id" });
 };
 </script>
 

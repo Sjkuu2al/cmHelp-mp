@@ -1,19 +1,19 @@
 <template>
   <view class="index">
     <uni-section title="上架中" type="line">
-      <div class="good-list">
+      <view class="good-list">
         <goodItem />
         <goodItem />
         <goodItem />
-      </div>
+      </view>
     </uni-section>
-    <div class="placeholder"></div>
+    <view class="placeholder"></view>
     <uni-section title="已下架" type="line">
-      <div class="good-list">
+      <view class="good-list">
         <goodItem />
         <goodItem />
         <goodItem />
-      </div>
+      </view>
     </uni-section>
   </view>
 </template>
