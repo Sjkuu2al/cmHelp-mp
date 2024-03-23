@@ -76,6 +76,7 @@ let openDetail = (id: number) => {
       text-indent: 0.4em;
     }
     .pContent {
+      margin-top: 10rpx;
       font-size: 36rpx;
       text-indent: 2em;
     }
@@ -84,7 +85,7 @@ let openDetail = (id: number) => {
       justify-content: flex-end;
       align-items: center;
       padding-top: 10rpx;
-      padding-right: 100rpx;
+      padding-right: 40rpx;
       image {
         height: 50rpx;
         width: 50rpx;
