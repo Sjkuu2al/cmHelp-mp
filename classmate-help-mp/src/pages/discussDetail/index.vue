@@ -2,7 +2,11 @@
   <view class="discuss-page">
     <view class="card">
       <view class="intro">
-        <view class="title">高等数学第一册</view>
+        <div class="pInfo">
+          <div class="pImg"><image src="/static/11.jpg" /></div>
+          <view class="pUser">高等数学第一册</view>
+        </div>
+
         <view class="content"> 大一学校统一购买的，很新没有什么笔记. </view>
         <div class="btn-box">
           <div class="common-btn" @click="openCommonDialog()">评论</div>
@@ -87,7 +91,7 @@ let dialogInputConfirm = (value: string) => {
   }
   .card {
     width: 100%;
-    height: 300rpx;
+
     border-radius: 10rpx;
     box-sizing: border-box;
     padding: 30rpx;
@@ -100,9 +104,26 @@ let dialogInputConfirm = (value: string) => {
       flex-direction: column;
       gap: 40rpx;
       width: 100%;
-      .title {
-        font-size: 48rpx;
-        font-weight: bolder;
+
+      .pInfo {
+        display: flex;
+        align-items: center;
+        padding-top: 10rpx;
+        .pImg {
+          height: 100rpx;
+          width: 100rpx;
+
+          image {
+            height: 100%;
+            width: 100%;
+            border-radius: 50rpx;
+          }
+        }
+        .pUser {
+          font-size: 48rpx;
+          font-weight: bolder;
+          text-indent: 0.4em;
+        }
       }
       .content {
         flex: 1;
@@ -140,7 +161,7 @@ let dialogInputConfirm = (value: string) => {
       border-bottom: 1px black solid;
       padding: 10rpx;
       box-sizing: border-box;
-      &:active{
+      &:active {
         background-color: rgb(242, 242, 242);
       }
       .user {
