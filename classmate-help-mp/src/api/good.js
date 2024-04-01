@@ -3,6 +3,9 @@ import { useHttp } from "../utils/request";
 export let getGoodList = (pageNum, pageSize) => {
   return useHttp({ url: "/good/getList", data: { pageNum, pageSize } });
 };
+export let getGoodListById = (owner) => {
+  return useHttp({ url: "/good/getListById", data: { owner } });
+};
 
 export let getGoodDetail = (id) => {
   return useHttp({ url: "/good/getById	", data: { id } });

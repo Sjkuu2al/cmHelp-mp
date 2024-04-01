@@ -9,14 +9,14 @@
 
         <view class="content"> 大一学校统一购买的，很新没有什么笔记. </view>
         <div class="btn-box">
-          <div class="common-btn" @click="openCommonDialog()">评论</div>
+          <div class="comment-btn" @click="openCommentDialog()">评论</div>
         </div>
       </view>
     </view>
 
     <view class="msg">
       <view class="title">评论区</view>
-      <view class="msg-box" @click="openCommonDialog(12)">
+      <view class="msg-box" @click="openCommentDialog(12)">
         <view class="user">sikuu</view>
         <view class="content">我想要,可以商量价格吗?</view>
         <view class="date">2023-05-11</view>
@@ -40,7 +40,7 @@
           ref="inputClose"
           mode="input"
           :title="dialogTitle"
-          :value="common"
+          :value="comment"
           placeholder="请输入内容"
           @confirm="dialogInputConfirm"
         ></uni-popup-dialog>
@@ -53,8 +53,8 @@
 import { ref } from "vue";
 let dialogTitle = ref("评论");
 let inputDialog = ref();
-let common = ref("");
-let openCommonDialog = (id?: number) => {
+let comment = ref("");
+let openCommentDialog = (id?: number) => {
   if (id) {
     dialogTitle.value = "回复评论";
   } else {
@@ -65,7 +65,7 @@ let openCommonDialog = (id?: number) => {
 let dialogInputConfirm = (value: string) => {
   console.log("提交:", value);
 
-  common.value = "";
+  comment.value = "";
 };
 </script>
 
@@ -132,7 +132,7 @@ let dialogInputConfirm = (value: string) => {
         display: flex;
         justify-content: flex-end;
         align-items: center;
-        .common-btn {
+        .comment-btn {
           border: 1px solid gray;
           border-radius: 10rpx;
           padding: 10rpx 20rpx;

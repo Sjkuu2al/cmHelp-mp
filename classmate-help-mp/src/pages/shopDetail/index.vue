@@ -2,12 +2,10 @@
   <view class="detail-page" v-if="type === '1'">
     <view class="card">
       <view class="intro">
-        <view class="title">&nbsp;&nbsp;高等数学第一册</view>
-        <view class="content">
-          &nbsp;&nbsp;大一学校统一购买的，很新没有什么笔记.
-        </view>
+        <view class="title">&nbsp;&nbsp;{{ form.title }}</view>
+        <view class="content"> &nbsp;&nbsp;{{ form.intro }} </view>
       </view>
-      <view class="coast">￥30</view>
+      <view class="coast">￥{{ form.price }}</view>
     </view>
     <swiper
       class="image-box"
@@ -17,36 +15,28 @@
       :interval="3000"
       :duration="500"
     >
-      <swiper-item>
-        <image class="image" src="@/static/photo1.png"></image>
-      </swiper-item>
-      <swiper-item>
-        <image class="image" src="@/static/photo1.png"></image>
-      </swiper-item>
-      <swiper-item>
-        <image class="image" src="@/static/photo1.png"></image>
+      <swiper-item v-for="item in form.imgs">
+        <image class="image" :src="item"></image>
       </swiper-item>
     </swiper>
 
     <view class="msg">
       <div class="top-box">
         <view class="title">评论区</view>
-        <div class="common-btn" @click="openCommonDialog()">评论</div>
+        <div class="comment-btn" @click="openCommentDialog()">评论</div>
       </div>
-      <view class="msg-box" @click="openCommonDialog(12)">
-        <view class="user">sikuu</view>
-        <view class="content">我想要,可以商1量价格吗?</view>
-        <view class="date">2023-05-11</view>
-      </view>
-      <view class="msg-box">
-        <view class="user">vivvd</view>
-        <view class="content">我的微信号是:148434123</view>
-        <view class="date">2023-03-12</view>
-      </view>
-      <view class="msg-box">
-        <view class="user">aasss</view>
-        <view class="content">不错哦</view>
-        <view class="date">2023-01-11</view>
+      <view
+        class="msg-box"
+        v-for="item in commentList"
+        @click="openCommentDialog(item.id)"
+        :key="item.id"
+      >
+        <view class="user"
+          >{{ item.userName
+          }}{{ item.fatherId ? `  回复  ${item.fatherName}` : "" }}:</view
+        >
+        <view class="content">{{ item.content }}</view>
+        <view class="date">{{ item.date }}</view>
       </view>
     </view>
     <view>
@@ -56,7 +46,7 @@
           ref="inputClose"
           mode="input"
           :title="dialogTitle"
-          :value="common"
+          :value="comment"
           placeholder="请输入内容"
           @confirm="dialogInputConfirm"
         ></uni-popup-dialog>
@@ -123,16 +113,26 @@
 </template>
 
 <script setup lang="ts">
+import { getGoodDetail } from "@/api/good.js";
+import { getCommentByOid, createComment } from "@/api/comment.js";
 import { onLoad } from "@dcloudio/uni-app";
 import { ref } from "vue";
 
 let type = ref();
 let id = ref();
 interface formType {
-  title: string;
-  radioType: string;
-  intro: string;
-  imgList: string[];
+  date?: null | string;
+  id?: number | null;
+  imgs?: string[] | null;
+  intro?: null | string;
+  isDelete?: number | null;
+  owner?: number | null;
+  status?: number | null;
+  title?: null | string;
+  price?: string;
+  type?: number | null;
+  view?: number | null;
+  [property: string]: any;
 }
 let form = ref<formType>({
   title: "",
@@ -140,14 +140,14 @@ let form = ref<formType>({
   intro: "",
   imgList: [],
 });
-
+let commentList = ref([]);
 // 评论弹窗相关
 let dialogTitle = ref("评论");
 let inputDialog = ref();
-let common = ref("");
-let openCommonDialog = (id?: number) => {
+let comment = ref("");
+let targetComment = {};
+let openCommentDialog = (id?: number) => {
   if (id) {
-    console.log("id", id);
     dialogTitle.value = "回复评论";
   } else {
     dialogTitle.value = "评论";
@@ -155,25 +155,53 @@ let openCommonDialog = (id?: number) => {
   inputDialog.value.open();
 };
 let dialogInputConfirm = (value: string) => {
-  console.log("提交:", value);
-
-  common.value = "";
+  let comment = {
+    type: 1,
+    ownerId: id.value,
+    content: value,
+    userId: 1,
+    userName: "sikuu",
+    date: new Date(),
+  };
+  createComment(comment).then((res) => {
+    console.log(res);
+    init();
+  });
 };
+
+// 初始化数据
 onLoad((e) => {
   // 选择性赋值（读取路由参数）
   if (e?.type) type.value = e.type;
   if (e?.id) id.value = e.id;
-  console.log("id.value :>> ", id.value);
+  if (id.value) {
+    init();
+  }
 });
+
+let init = () => {
+  commentList.value = [];
+  getGoodDetail(id.value).then((res) => {
+    res.imgs = JSON.parse(res.imgs);
+    form.value = res;
+  });
+  getCommentByOid(id.value, 1).then((res) => {
+    res.forEach((item) => {
+      commentList.value.push(item);
+    });
+  });
+};
+
 let formSubmit = () => {
   console.log("成功提交");
 };
 let radioChange = (e: any) => {
   form.value.radioType = e.detail.value;
 };
+// 选择图片
 let uploadImg = () => {
   uni.chooseImage({
-    count: 3, //默认9
+    count: 3,
     sizeType: ["original", "compressed"], //可以指定是原图还是压缩图，默认二者都有
     sourceType: ["album"], //从相册选择
     success: function (res) {
@@ -259,7 +287,7 @@ let uploadImg = () => {
         font-weight: bolder;
       }
 
-      .common-btn {
+      .comment-btn {
         border: 1px solid gray;
         border-radius: 10rpx;
         padding: 10rpx 20rpx;

@@ -2,11 +2,16 @@
   <view class="index">
     <uni-section title="展示中" type="line">
       <view class="discuss-list">
-        <view class="card" v-for="item in list" :key="item.id" @click="openDetail(item.id)">
+        <view
+          class="card"
+          v-for="item in list"
+          :key="item.id"
+          @click="openDetail(item.id)"
+        >
           <view class="pContent">{{ item.pContent }}</view>
-          <view class="common">
-            <image src="@/static/i-common.png"></image>
-            <view class="common-count">{{ item.commonCount }}</view>
+          <view class="comment">
+            <image src="@/static/i-comment.png"></image>
+            <view class="comment-count">{{ item.CommentCount }}</view>
           </view>
         </view>
       </view>
@@ -14,11 +19,16 @@
     <view class="placeholder"></view>
     <uni-section title="不展示" type="line">
       <view class="discuss-list">
-        <view class="card" v-for="item in list" :key="item.id" @click="openDetail(item.id)">
+        <view
+          class="card"
+          v-for="item in list"
+          :key="item.id"
+          @click="openDetail(item.id)"
+        >
           <view class="pContent">{{ item.pContent }}</view>
-          <view class="common">
-            <image src="@/static/i-common.png"></image>
-            <view class="common-count">{{ item.commonCount }}</view>
+          <view class="comment">
+            <image src="@/static/i-comment.png"></image>
+            <view class="comment-count">{{ item.CommentCount }}</view>
           </view>
         </view>
       </view>
@@ -32,13 +42,13 @@ let list = [
     id: 1,
     pUser: "发表者",
     pContent: "有人知道计算机三班的课表吗?",
-    commonCount: 23,
+    CommentCount: 23,
   },
   {
     id: 2,
     pUser: "sikuu",
     pContent: "明天什么时候开学?",
-    commonCount: 19,
+    CommentCount: 19,
   },
 ];
 let openDetail = (id: number) => {
@@ -71,7 +81,7 @@ let openDetail = (id: number) => {
       font-size: 36rpx;
       text-indent: 2em;
     }
-    .common {
+    .comment {
       display: flex;
       justify-content: flex-end;
       align-items: center;

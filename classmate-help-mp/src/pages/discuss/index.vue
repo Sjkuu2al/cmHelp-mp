@@ -20,9 +20,9 @@
       </div>
 
       <view class="pContent">{{ item.pContent }}</view>
-      <view class="common">
-        <image src="@/static/i-common.png"></image>
-        <view class="common-count">{{ item.commonCount }}</view>
+      <view class="comment">
+        <image src="@/static/i-comment.png"></image>
+        <view class="comment-count">{{ item.CommentCount }}</view>
       </view>
       <!-- <view class="reply" v-for="(rep, idx) in item.replyArr" :key="idx">
         <view class="rUser">{{ rep.rUser }}</view>
@@ -52,14 +52,14 @@ let list = [
     pUser: "发表者",
     pContent: "有人知道计算机三班的课表吗?",
     pImg: "/static/11.jpg",
-    commonCount: 23,
+    CommentCount: 23,
   },
   {
     id: 2,
     pUser: "sikuu",
     pContent: "明天什么时候开学?",
     pImg: "/static/11.jpg",
-    commonCount: 19,
+    CommentCount: 19,
   },
 ];
 let openDetail = (id: number) => {
@@ -127,7 +127,7 @@ let openDetail = (id: number) => {
       font-size: 36rpx;
       text-indent: 2em;
     }
-    .common {
+    .comment {
       display: flex;
       justify-content: flex-end;
       align-items: center;
