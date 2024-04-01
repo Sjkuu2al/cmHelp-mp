@@ -9,7 +9,14 @@
       </view>
       <view class="coast">￥30</view>
     </view>
-    <swiper class="image-box" circular indicator-dots autoplay :interval="3000" :duration="500">
+    <swiper
+      class="image-box"
+      circular
+      indicator-dots
+      autoplay
+      :interval="3000"
+      :duration="500"
+    >
       <swiper-item>
         <image class="image" src="@/static/photo1.png"></image>
       </swiper-item>
@@ -61,7 +68,12 @@
     <form @submit="formSubmit">
       <view class="edit-part">
         <view class="title">商品名</view>
-        <input class="line" focus placeholder="请输入商品名" v-model="form.title" />
+        <input
+          class="line"
+          focus
+          placeholder="请输入商品名"
+          v-model="form.title"
+        />
       </view>
       <view class="edit-part">
         <view class="title">品类</view>
@@ -82,8 +94,12 @@
       </view>
       <view class="edit-part">
         <view class="title">商品简介</view>
-        <textarea v-model="form.intro" placeholder="请输入商品简介" class="line"
-          :style="{ height: '500rpx', width: '100%' }" />
+        <textarea
+          v-model="form.intro"
+          placeholder="请输入商品简介"
+          class="line"
+          :style="{ height: '500rpx', width: '100%' }"
+        />
       </view>
       <view class="edit-part">
         <view class="title">商品图片</view>
@@ -91,14 +107,18 @@
           <view class="up-image" v-for="item in form.imgList" :key="item">
             <image :src="item"></image>
           </view>
-          <view class="up-image" @click="uploadImg()" v-if="form.imgList.length < 3">+</view>
+          <view
+            class="up-image"
+            @click="uploadImg()"
+            v-if="form.imgList.length < 3"
+            >+</view
+          >
         </view>
       </view>
       <view class="btns">
         <button type="primary" form-type="submit">提交</button>
       </view>
     </form>
-    
   </view>
 </template>
 
@@ -127,7 +147,7 @@ let inputDialog = ref();
 let common = ref("");
 let openCommonDialog = (id?: number) => {
   if (id) {
-    console.log('id', id)
+    console.log("id", id);
     dialogTitle.value = "回复评论";
   } else {
     dialogTitle.value = "评论";
@@ -143,6 +163,7 @@ onLoad((e) => {
   // 选择性赋值（读取路由参数）
   if (e?.type) type.value = e.type;
   if (e?.id) id.value = e.id;
+  console.log("id.value :>> ", id.value);
 });
 let formSubmit = () => {
   console.log("成功提交");
@@ -208,7 +229,8 @@ let uploadImg = () => {
         font-weight: bolder;
       }
 
-      .content {}
+      .content {
+      }
     }
 
     .coast {
@@ -248,7 +270,6 @@ let uploadImg = () => {
       }
     }
 
-
     .msg-box {
       display: flex;
       flex-direction: column;
@@ -256,7 +277,7 @@ let uploadImg = () => {
       border-bottom: 1px black solid;
       padding: 10rpx;
       box-sizing: border-box;
-      &:active{
+      &:active {
         background-color: rgb(242, 242, 242);
       }
       .user {

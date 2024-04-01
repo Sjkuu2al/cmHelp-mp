@@ -14,12 +14,14 @@
 
 <script setup lang="ts">
 import { getNoticeList } from "@/api/notice.js";
+import { getUserById } from "@/api/user.js";
 import { ref } from "vue";
 let noticeList = ref<Array<any>>([]);
 getNoticeList().then((res: any) => {
   noticeList.value = res;
   console.log("noticeList :>> ", noticeList);
 });
+getUserById(1);
 </script>
 
 <style lang="scss" scoped>

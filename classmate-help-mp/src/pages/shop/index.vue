@@ -16,23 +16,73 @@
       </view>
     </view>
     <view class="shop-list">
-      <goodItem />
-      <goodItem />
-      <goodItem />
-      <goodItem />
-      <goodItem />
+      <goodItem
+        v-for="item in goods"
+        :id="item.id"
+        :img="item.imgs ? item.imgs[0] : ''"
+        :title="item.title!"
+        :intro="item.intro!"
+        :price="item.price!"
+      />
+      <uni-load-more :status="status"></uni-load-more>
     </view>
     <view class="createbtn" @click="toCreate()">+</view>
   </view>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import goodItem from "@/components/shop/goodItem.vue";
+import { getGoodList } from "@/api/good.js";
+import { onReachBottom } from "@dcloudio/uni-app";
 let keyword = ref("");
 let toCreate = () => {
   uni.navigateTo({ url: "/pages/shopDetail/index?type=0" });
 };
+interface good {
+  date?: null | string;
+  id?: number | null;
+  imgs?: string[] | null;
+  intro?: null | string;
+  isDelete?: number | null;
+  owner?: number | null;
+  status?: number | null;
+  title?: null | string;
+  price?: string;
+  type?: number | null;
+  view?: number | null;
+  [property: string]: any;
+}
+let goods = ref<good[]>([]);
+let page = {
+  pageNum: 0,
+  pageSize: 5,
+};
+let haveMore = true;
+let status = ref<string>("more");
+onMounted(async () => {
+  await getGoodList(page.pageNum, page.pageSize).then((res: any) => {
+    res.forEach((item: any) => {
+      item.imgs = JSON.parse(item.imgs);
+    });
+    goods.value = res;
+  });
+});
+onReachBottom(async () => {
+  if (haveMore) {
+    status.value = "loading";
+    page.pageNum++;
+    await getGoodList(page.pageNum, page.pageSize).then((res: any) => {
+      res.forEach((item: any) => {
+        item.imgs = JSON.parse(item.imgs);
+        goods.value.push(item);
+      });
+    });
+    status.value = "nomore";
+    haveMore = false;
+  } else {
+  }
+});
 </script>
 
 <style lang="scss" scoped>
@@ -75,7 +125,7 @@ let toCreate = () => {
   .shop-list {
     display: flex;
     flex-direction: column;
-    gap: 40rpx;
+
     border-radius: 10rpx;
     box-shadow: 10rpx 5rpx 10rpx rgb(232, 232, 232);
     background-color: white;
