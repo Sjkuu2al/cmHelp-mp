@@ -1,13 +1,26 @@
 <template>
   <view class="index">
-    <toCard :introduction="noticeIntro" :bgImage="notice" toUrl="/pages/notice/index"/>
-    <toCard :introduction="exchangeIntro" :bgImage="exchange" toUrl="/pages/shop/index"/>
-    <toCard :introduction="discussIntro" :bgImage="discuss" toUrl="/pages/discuss/index"/>
+    <toCard
+      :introduction="noticeIntro"
+      :bgImage="notice"
+      toUrl="/pages/notice/index"
+    />
+    <toCard
+      :introduction="exchangeIntro"
+      :bgImage="exchange"
+      toUrl="/pages/shop/index"
+    />
+    <toCard
+      :introduction="discussIntro"
+      :bgImage="discuss"
+      toUrl="/pages/discuss/index"
+    />
     <toCard :introduction="futureIntro" :bgImage="future" :isTo="false" />
   </view>
 </template>
 
 <script setup lang="ts">
+
 import toCard from "@/components/index/toCard.vue";
 import exchange from "@/static/exchange.png";
 import discuss from "@/static/discuss.png";
@@ -29,6 +42,7 @@ const futureIntro = {
   title: "敬请期待",
   content: "更多功能开发中...",
 };
+
 </script>
 
 <style lang="scss" scoped>

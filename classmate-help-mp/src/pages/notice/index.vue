@@ -1,26 +1,10 @@
 <template>
   <view class="notice-box">
     <uni-section title="公告列表" type="line">
-      <uni-collapse accordion>
-        <uni-collapse-item title="2024.03.02公告">
+      <uni-collapse accordion v-for="item in noticeList">
+        <uni-collapse-item :title="item.title" :key="item.id">
           <view class="content">
-            <text class="text"
-              >2024.03.02公告同时只会保留一个组件的打开状态，其余组件会自动关闭。</text
-            >
-          </view>
-        </uni-collapse-item>
-        <uni-collapse-item title="2024.02.24公告">
-          <view class="content">
-            <text class="text"
-              >2024.03.02公告同时只会保留一个组件的打开状态，其余组件会自动关闭。</text
-            >
-          </view>
-        </uni-collapse-item>
-        <uni-collapse-item title="2024.01.14公告">
-          <view class="content">
-            <text class="text"
-              >2024.03.02公告同时只会保留一个组件的打开状态，其余组件会自动关闭。</text
-            >
+            <text class="text">{{ item.content }}</text>
           </view>
         </uni-collapse-item>
       </uni-collapse>
@@ -28,7 +12,15 @@
   </view>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { getNoticeList } from "@/api/notice.js";
+import { ref } from "vue";
+let noticeList = ref<Array<any>>([]);
+getNoticeList().then((res: any) => {
+  noticeList.value = res;
+  console.log("noticeList :>> ", noticeList);
+});
+</script>
 
 <style lang="scss" scoped>
 .notice-box {
