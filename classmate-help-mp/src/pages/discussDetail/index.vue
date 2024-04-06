@@ -4,11 +4,12 @@
       <view class="intro">
         <div class="pInfo">
           <div class="pImg"><image src="/static/11.jpg" /></div>
-          <view class="pUser">高等数学第一册</view>
+          <view class="pUser">{{ form.title }}</view>
         </div>
 
-        <view class="content"> 大一学校统一购买的，很新没有什么笔记. </view>
+        <view class="content">{{ form.intro }}</view>
         <div class="btn-box">
+          <div class="time">{{ form.date }}</div>
           <div class="comment-btn" @click="openCommentDialog()">评论</div>
         </div>
       </view>
@@ -50,7 +51,24 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
+import { getDiscussDetail } from "@/api/discuss.js";
+import { onLoad } from "@dcloudio/uni-app";
+interface discuss {
+  date?: null | string;
+  id?: number | null;
+  intro?: null | string;
+  isDelete?: number | null;
+  ownerId?: number | null;
+  ownerName?: null | string;
+  status?: number | null;
+  title?: null | string;
+  view?: number | null;
+  [property: string]: any;
+}
+let id = ref();
+let type = ref();
+let form = ref<discuss>();
 let dialogTitle = ref("评论");
 let inputDialog = ref();
 let comment = ref("");
@@ -64,8 +82,21 @@ let openCommentDialog = (id?: number) => {
 };
 let dialogInputConfirm = (value: string) => {
   console.log("提交:", value);
-
   comment.value = "";
+};
+onLoad((e) => {
+  // 选择性赋值（读取路由参数）
+  if (e?.type) type.value = e.type;
+  if (e?.id) id.value = e.id;
+  if (id.value) {
+    init();
+  }
+});
+let init = () => {
+  getDiscussDetail(id.value).then((res) => {
+    res.date = res.date.substring(0, 10);
+    form.value = res;
+  });
 };
 </script>
 
@@ -130,7 +161,7 @@ let dialogInputConfirm = (value: string) => {
       }
       .btn-box {
         display: flex;
-        justify-content: flex-end;
+        justify-content: space-between;
         align-items: center;
         .comment-btn {
           border: 1px solid gray;

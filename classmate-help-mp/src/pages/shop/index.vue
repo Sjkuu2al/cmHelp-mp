@@ -8,12 +8,12 @@
           v-model="keyword"
         />
       </view>
-      <view class="filter-box">
+      <!-- <view class="filter-box">
         <image src="@/static/i-book.png" />
         <image src="@/static/i-clothes.png" />
         <image src="@/static/i-phone.png" />
         <image src="@/static/i-hzp.png" />
-      </view>
+      </view> -->
     </view>
     <view class="shop-list">
       <goodItem
@@ -31,13 +31,13 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watch } from "vue";
 import goodItem from "@/components/shop/goodItem.vue";
 import { getGoodList } from "@/api/good.js";
-import { onReachBottom } from "@dcloudio/uni-app";
+import { onReachBottom, onShow } from "@dcloudio/uni-app";
 let keyword = ref("");
 let toCreate = () => {
-  uni.navigateTo({ url: "/pages/shopDetail/index?type=0" });
+  uni.navigateTo({ url: "/pages/shopDetail/index?type=2" });
 };
 interface good {
   date?: null | string;
@@ -64,8 +64,8 @@ onMounted(async () => {
   await getGoodList(page.pageNum, page.pageSize).then((res: any) => {
     res.forEach((item: any) => {
       item.imgs = JSON.parse(item.imgs);
+      goods.value.push(item);
     });
-    goods.value = res;
   });
 });
 onReachBottom(async () => {
@@ -92,7 +92,7 @@ onReachBottom(async () => {
   padding: 30rpx;
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 260rpx 1fr;
+  grid-template-rows: 100rpx 1fr;
   gap: 40rpx;
   .top-filter {
     background-color: white;

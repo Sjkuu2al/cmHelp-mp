@@ -26,6 +26,7 @@
         <div class="comment-btn" @click="openCommentDialog()">评论</div>
       </div>
       <view
+        v-if="commentList.length > 0"
         class="msg-box"
         v-for="item in commentList"
         @click="openCommentDialog(item.id)"
@@ -38,6 +39,7 @@
         <view class="content">{{ item.content }}</view>
         <view class="date">{{ item.date }}</view>
       </view>
+      <div class="none-comment" v-else>暂无更多评论</div>
     </view>
     <view>
       <!-- 输入框示例 -->
@@ -46,7 +48,7 @@
           ref="inputClose"
           mode="input"
           :title="dialogTitle"
-          :value="comment"
+          :value="com"
           placeholder="请输入内容"
           @confirm="dialogInputConfirm"
         ></uni-popup-dialog>
@@ -54,7 +56,7 @@
     </view>
   </view>
   <!-- 新增/编辑表单 -->
-  <view class="edit-page" v-else-if="type === '0'">
+  <view class="edit-page" v-else-if="type === '0' || type === '2'">
     <form @submit="formSubmit">
       <view class="edit-part">
         <view class="title">商品名</view>
@@ -65,20 +67,30 @@
           v-model="form.title"
         />
       </view>
+      <!-- todo:限制正整数 -->
+      <view class="edit-part">
+        <view class="title">商品价格</view>
+        <input
+          class="line"
+          focus
+          placeholder="请输入商品价格"
+          v-model="form.price"
+        />
+      </view>
       <view class="edit-part">
         <view class="title">品类</view>
         <radio-group @change="radioChange">
           <label class="radio">
-            <radio value="0" :checked="form.radioType === '0'" />教材
+            <radio value="0" :checked="form.type === 0" />教材
           </label>
           <label class="radio">
-            <radio value="1" :checked="form.radioType === '1'" />衣物
+            <radio value="1" :checked="form.type === 1" />衣物
           </label>
           <label class="radio">
-            <radio value="2" :checked="form.radioType === '2'" />电子
+            <radio value="2" :checked="form.type === 2" />电子
           </label>
           <label class="radio">
-            <radio value="3" :checked="form.radioType === '3'" />其他
+            <radio value="3" :checked="form.type === 3" />其他
           </label>
         </radio-group>
       </view>
@@ -94,13 +106,13 @@
       <view class="edit-part">
         <view class="title">商品图片</view>
         <view class="upload-image-box">
-          <view class="up-image" v-for="item in form.imgList" :key="item">
+          <view class="up-image" v-for="item in form.imgs" :key="item">
             <image :src="item"></image>
           </view>
           <view
             class="up-image"
             @click="uploadImg()"
-            v-if="form.imgList.length < 3"
+            v-if="form.imgs.length < 3"
             >+</view
           >
         </view>
@@ -113,10 +125,14 @@
 </template>
 
 <script setup lang="ts">
-import { getGoodDetail } from "@/api/good.js";
-import { getCommentByOid, createComment } from "@/api/comment.js";
+import { getGoodDetail, createGood, editGood } from "@/api/good.js";
+import {
+  getCommentByOid,
+  createComment,
+  getCommentOwnerName,
+} from "@/api/comment.js";
 import { onLoad } from "@dcloudio/uni-app";
-import { ref } from "vue";
+import { ref, watch } from "vue";
 
 let type = ref();
 let id = ref();
@@ -135,27 +151,38 @@ interface formType {
   [property: string]: any;
 }
 let form = ref<formType>({
+  owner: 1,
   title: "",
-  radioType: "0",
+  type: 0,
   intro: "",
-  imgList: [],
+  imgs: [],
 });
 let commentList = ref([]);
 // 评论弹窗相关
 let dialogTitle = ref("评论");
 let inputDialog = ref();
-let comment = ref("");
-let targetComment = {};
+let com = ref("");
+let targetComment;
 let openCommentDialog = (id?: number) => {
   if (id) {
     dialogTitle.value = "回复评论";
+    targetComment = id;
   } else {
     dialogTitle.value = "评论";
+    targetComment = null;
   }
   inputDialog.value.open();
 };
-let dialogInputConfirm = (value: string) => {
+let dialogInputConfirm = async (value: string) => {
+  let fatherName;
+  if (targetComment) {
+    await getCommentOwnerName(targetComment).then((res) => {
+      fatherName = res;
+    });
+  }
   let comment = {
+    fatherId: targetComment ? targetComment : null,
+    fatherName,
     type: 1,
     ownerId: id.value,
     content: value,
@@ -167,6 +194,7 @@ let dialogInputConfirm = (value: string) => {
     console.log(res);
     init();
   });
+  com.value = "";
 };
 
 // 初始化数据
@@ -187,16 +215,40 @@ let init = () => {
   });
   getCommentByOid(id.value, 1).then((res) => {
     res.forEach((item) => {
+      item.date = item.date.substring(0, 10);
       commentList.value.push(item);
     });
   });
 };
-
 let formSubmit = () => {
-  console.log("成功提交");
+  let data = {
+    ...form.value,
+    imgs: JSON.stringify(form.value.imgs),
+    status: 1,
+  };
+  if (data.title && data.intro && data.price) {
+    if (type.value === "0") {
+      console.log("1313123213");
+      editGood(data).then((res) => {
+        if (res) {
+          uni.showToast({ title: "编辑成功", duration: 3000 });
+          uni.navigateBack();
+        }
+      });
+    } else {
+      createGood(data).then((res) => {
+        if (res) {
+          uni.showToast({ title: "新增成功", duration: 3000 });
+          uni.navigateBack();
+        }
+      });
+    }
+  } else {
+    uni.showToast({ title: "请完善信息", duration: 3000, icon: "error" });
+  }
 };
 let radioChange = (e: any) => {
-  form.value.radioType = e.detail.value;
+  form.value.type = e.detail.value;
 };
 // 选择图片
 let uploadImg = () => {
@@ -206,7 +258,7 @@ let uploadImg = () => {
     sourceType: ["album"], //从相册选择
     success: function (res) {
       if (res.tempFilePaths.length) {
-        form.value.imgList = form.value.imgList.concat(res.tempFilePaths);
+        form.value.imgs = form.value.imgs.concat(res.tempFilePaths);
       }
     },
   });
@@ -297,7 +349,13 @@ let uploadImg = () => {
         }
       }
     }
-
+    .none-comment {
+      padding: 30rpx;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: gray;
+    }
     .msg-box {
       display: flex;
       flex-direction: column;

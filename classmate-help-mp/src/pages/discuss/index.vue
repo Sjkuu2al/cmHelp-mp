@@ -10,19 +10,19 @@
     </div>
     <view
       class="card"
-      v-for="item in list"
+      v-for="item in discussList"
       :key="item.id"
       @click="openDetail(item.id)"
     >
       <div class="pInfo">
-        <div class="pImg"><image :src="item.pImg" /></div>
-        <view class="pUser">{{ item.pUser }}</view>
+        <div class="pImg"><image src="@/static/11.jpg" /></div>
+        <view class="pUser">{{ item.ownerName }}</view>
       </div>
 
-      <view class="pContent">{{ item.pContent }}</view>
+      <view class="pContent">{{ item.title }}</view>
       <view class="comment">
         <image src="@/static/i-comment.png"></image>
-        <view class="comment-count">{{ item.CommentCount }}</view>
+        <view class="comment-count">33</view>
       </view>
       <!-- <view class="reply" v-for="(rep, idx) in item.replyArr" :key="idx">
         <view class="rUser">{{ rep.rUser }}</view>
@@ -33,7 +33,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from "vue";
+import { onMounted, ref, watch } from "vue";
+import { getDiscussList } from "@/api/discuss.js";
+import { onShow, onReachBottom } from "@dcloudio/uni-app";
 let check = ref<number>(1);
 let changeCheck = (value: number) => {
   check.value = value;
@@ -46,25 +48,51 @@ watch(check, (newVal) => {
     // 最热贴
   }
 });
-let list = [
-  {
-    id: 1,
-    pUser: "发表者",
-    pContent: "有人知道计算机三班的课表吗?",
-    pImg: "/static/11.jpg",
-    CommentCount: 23,
-  },
-  {
-    id: 2,
-    pUser: "sikuu",
-    pContent: "明天什么时候开学?",
-    pImg: "/static/11.jpg",
-    CommentCount: 19,
-  },
-];
 let openDetail = (id: number) => {
   uni.navigateTo({ url: `/pages/discussDetail/index?id=${id}` });
 };
+interface discuss {
+  date?: null | string;
+  id?: number | null;
+  intro?: null | string;
+  isDelete?: number | null;
+  ownerId?: number | null;
+  ownerName?: null | string;
+  status?: number | null;
+  title?: null | string;
+  view?: number | null;
+  [property: string]: any;
+}
+let discussList = ref<discuss[]>([]);
+let page = {
+  pageNum: 0,
+  pageSize: 5,
+};
+let haveMore = true;
+let status = ref<string>("more");
+onMounted(async () => {
+  await getDiscussList(page.pageNum, page.pageSize).then((res: any) => {
+    res.forEach((item: any) => {
+      discussList.value.push(item);
+    });
+    console.log("discussList.value :>> ", discussList.value);
+  });
+});
+onReachBottom(async () => {
+  if (haveMore) {
+    status.value = "loading";
+    page.pageNum++;
+    await getDiscussList(page.pageNum, page.pageSize).then((res: any) => {
+      res.forEach((item: any) => {
+        item.imgs = JSON.parse(item.imgs);
+        discussList.value.push(item);
+      });
+    });
+    status.value = "nomore";
+    haveMore = false;
+  } else {
+  }
+});
 </script>
 
 <style lang="scss" scoped>

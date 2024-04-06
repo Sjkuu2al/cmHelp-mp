@@ -1,5 +1,9 @@
 import { useHttp } from "../utils/request";
 
+export let getCommentOwnerName = (fatherId) => {
+  return useHttp({ url: "/comment/getFn", data: { fatherId } });
+}
+
 export let getCommentByOid = (ownerId, type) => {
   return useHttp({ url: "/comment/getByOid", data: { ownerId, type } });
 };

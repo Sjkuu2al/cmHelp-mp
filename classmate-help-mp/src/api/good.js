@@ -13,7 +13,7 @@ export let getGoodDetail = (id) => {
 export let createGood = (good) => {
   return useHttp({
     url: "/good/create",
-    data: { good },
+    data: good,
     method: "POST",
   });
 };
@@ -21,5 +21,5 @@ export let changeGoodStatus = (id, status) => {
   return useHttp({ url: "/good/status", data: { id, status } });
 };
 export let editGood = (good) => {
-  return useHttp({ url: "/good/edit", data: { good }, method: "POST" });
+  return useHttp({ url: "/good/edit", data: good, method: "POST" });
 };

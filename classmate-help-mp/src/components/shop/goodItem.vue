@@ -30,7 +30,11 @@ const props = defineProps({
   status: Number,
 });
 let openDetail = () => {
-  uni.navigateTo({ url: `/pages/shopDetail/index?type=1&id=${props.id}` });
+  if (props.edit) {
+    uni.navigateTo({ url: `/pages/shopDetail/index?type=0&id=${props.id}` });
+  } else {
+    uni.navigateTo({ url: `/pages/shopDetail/index?type=1&id=${props.id}` });
+  }
 };
 let changeStatus = (status: Number) => {
   uni.showModal({
