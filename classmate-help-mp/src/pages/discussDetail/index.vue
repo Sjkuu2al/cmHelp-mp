@@ -1,5 +1,5 @@
 <template>
-  <view class="discuss-page">
+  <view class="discuss-page" v-if="type === '1'">
     <view class="card">
       <view class="intro">
         <div class="pInfo">
@@ -10,28 +10,30 @@
         <view class="content">{{ form.intro }}</view>
         <div class="btn-box">
           <div class="time">{{ form.date }}</div>
-          <div class="comment-btn" @click="openCommentDialog()">评论</div>
         </div>
       </view>
     </view>
 
     <view class="msg">
-      <view class="title">评论区</view>
-      <view class="msg-box" @click="openCommentDialog(12)">
-        <view class="user">sikuu</view>
-        <view class="content">我想要,可以商量价格吗?</view>
-        <view class="date">2023-05-11</view>
+      <div class="top-box">
+        <view class="title">评论区</view>
+        <div class="comment-btn" @click="openCommentDialog()">评论</div>
+      </div>
+      <view
+        v-if="commentList.length > 0"
+        class="msg-box"
+        v-for="item in commentList"
+        @click="openCommentDialog(item.id)"
+        :key="item.id"
+      >
+        <view class="user"
+          >{{ item.userName
+          }}{{ item.fatherId ? `  回复  ${item.fatherName}` : "" }}:</view
+        >
+        <view class="content">{{ item.content }}</view>
+        <view class="date">{{ item.date }}</view>
       </view>
-      <view class="msg-box">
-        <view class="user">vivvd</view>
-        <view class="content">我的微信号是:148434123</view>
-        <view class="date">2023-03-12</view>
-      </view>
-      <view class="msg-box">
-        <view class="user">aasss</view>
-        <view class="content">不错哦</view>
-        <view class="date">2023-01-11</view>
-      </view>
+      <div class="none-comment" v-else>暂无更多评论</div>
     </view>
 
     <view>
@@ -41,19 +43,68 @@
           ref="inputClose"
           mode="input"
           :title="dialogTitle"
-          :value="comment"
+          :value="com"
           placeholder="请输入内容"
           @confirm="dialogInputConfirm"
         ></uni-popup-dialog>
       </uni-popup>
     </view>
   </view>
+  <!-- 新增/编辑表单 -->
+  <view class="edit-page" v-else-if="type === '0' || type === '2'">
+    <form @submit="formSubmit">
+      <view class="edit-part">
+        <view class="title">标题</view>
+        <input
+          class="line"
+          focus
+          placeholder="请输入帖子标题"
+          v-model="form.title"
+        />
+      </view>
+      <view class="edit-part">
+        <view class="title">内容</view>
+        <textarea
+          v-model="form.intro"
+          placeholder="请输入商品简介"
+          class="line"
+          :style="{ height: '500rpx', width: '100%' }"
+        />
+      </view>
+
+      <!-- <view class="edit-part">
+        <view class="title">商品图片</view>
+        <view class="upload-image-box">
+          <view class="up-image" v-for="item in form.imgs" :key="item">
+            <image :src="item"></image>
+          </view>
+          <view
+            class="up-image"
+            @click="uploadImg()"
+            v-if="form.imgs.length < 3"
+            >+</view
+          >
+        </view> 
+      </view>-->
+
+      <view class="btns">
+        <button type="primary" form-type="submit">提交</button>
+      </view>
+    </form>
+  </view>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
-import { getDiscussDetail } from "@/api/discuss.js";
+import { getDiscussDetail, pvDiscuss } from "@/api/discuss.js";
+import {
+  getCommentByOid,
+  createComment,
+  getCommentOwnerName,
+} from "@/api/comment.js";
+
 import { onLoad } from "@dcloudio/uni-app";
+
 interface discuss {
   date?: null | string;
   id?: number | null;
@@ -68,22 +119,49 @@ interface discuss {
 }
 let id = ref();
 let type = ref();
-let form = ref<discuss>();
+let form = ref<discuss>({});
+// 评论
+let targetComment;
+let commentList = ref([]);
 let dialogTitle = ref("评论");
+let com = ref("");
 let inputDialog = ref();
-let comment = ref("");
+let inputClose = ref();
 let openCommentDialog = (id?: number) => {
   if (id) {
     dialogTitle.value = "回复评论";
+    targetComment = id;
   } else {
     dialogTitle.value = "评论";
+    targetComment = null;
   }
   inputDialog.value.open();
 };
-let dialogInputConfirm = (value: string) => {
-  console.log("提交:", value);
-  comment.value = "";
+let dialogInputConfirm = async (value: string) => {
+  let fatherName;
+  if (targetComment) {
+    await getCommentOwnerName(targetComment).then((res) => {
+      fatherName = res;
+    });
+  }
+  let comment = {
+    fatherId: targetComment ? targetComment : null,
+    fatherName,
+    type: 2,
+    ownerId: id.value,
+    content: value,
+    userId: 1,
+    userName: "sikuu",
+    date: new Date(),
+  };
+  createComment(comment).then(() => {
+    init();
+  });
+
+  com.value = "";
+  inputClose.value.val = "";
 };
+// 初始化数据
 onLoad((e) => {
   // 选择性赋值（读取路由参数）
   if (e?.type) type.value = e.type;
@@ -93,10 +171,46 @@ onLoad((e) => {
   }
 });
 let init = () => {
+  commentList.value = [];
+  pvDiscuss(id.value);
   getDiscussDetail(id.value).then((res) => {
     res.date = res.date.substring(0, 10);
     form.value = res;
   });
+  getCommentByOid(id.value, 2).then((res) => {
+    res.forEach((item) => {
+      item.date = item.date.substring(0, 10);
+      commentList.value.push(item);
+    });
+  });
+};
+
+let formSubmit = () => {
+  let data = {
+    ...form.value,
+    imgs: JSON.stringify(form.value.imgs),
+    status: 1,
+  };
+  if (data.title && data.intro && data.price) {
+    if (type.value === "0") {
+      console.log("1313123213");
+      editGood(data).then((res) => {
+        if (res) {
+          uni.showToast({ title: "编辑成功", duration: 3000 });
+          uni.navigateBack();
+        }
+      });
+    } else {
+      createGood(data).then((res) => {
+        if (res) {
+          uni.showToast({ title: "新增成功", duration: 3000 });
+          uni.navigateBack();
+        }
+      });
+    }
+  } else {
+    uni.showToast({ title: "请完善信息", duration: 3000, icon: "error" });
+  }
 };
 </script>
 
@@ -181,9 +295,31 @@ let init = () => {
     box-shadow: 10rpx 5rpx 10rpx rgb(232, 232, 232);
     padding: 20rpx;
     box-sizing: border-box;
-    .title {
-      font-size: 48rpx;
-      font-weight: bolder;
+
+    .top-box {
+      display: flex;
+      justify-content: space-between;
+      .title {
+        font-size: 48rpx;
+        font-weight: bolder;
+      }
+
+      .comment-btn {
+        border: 1px solid gray;
+        border-radius: 10rpx;
+        padding: 10rpx 20rpx;
+
+        &:active {
+          background-color: rgb(230, 230, 230);
+        }
+      }
+    }
+    .none-comment {
+      padding: 30rpx;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: gray;
     }
     .msg-box {
       display: flex;
@@ -202,6 +338,72 @@ let init = () => {
       .date {
         align-self: flex-end;
       }
+    }
+  }
+}
+.edit-page {
+  padding: 30rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 20rpx;
+
+  .edit-part {
+    padding: 20rpx;
+    display: flex;
+    flex-direction: column;
+    gap: 10rpx;
+
+    .title {
+      font-size: 48rpx;
+      font-weight: bolder;
+    }
+
+    .line {
+      height: 50rpx;
+      font-size: 40rpx;
+      background-color: white;
+      box-shadow: 10rpx 5rpx 10rpx rgb(232, 232, 232);
+    }
+
+    .radio {
+      font-size: 36rpx;
+    }
+
+    .upload-image-box {
+      height: 200rpx;
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-auto-flow: row;
+      gap: 20rpx;
+
+      .up-image {
+        width: 100%;
+        background-color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 100rpx;
+
+        image {
+          height: 100%;
+          width: 100%;
+          object-fit: contain;
+        }
+      }
+    }
+  }
+
+  .btns {
+    display: flex;
+    gap: 100%;
+    justify-content: center;
+    align-items: center;
+
+    button {
+      width: 600rpx;
     }
   }
 }

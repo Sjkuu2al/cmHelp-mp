@@ -162,6 +162,7 @@ let commentList = ref([]);
 let dialogTitle = ref("评论");
 let inputDialog = ref();
 let com = ref("");
+let inputClode = ref();
 let targetComment;
 let openCommentDialog = (id?: number) => {
   if (id) {
@@ -190,11 +191,11 @@ let dialogInputConfirm = async (value: string) => {
     userName: "sikuu",
     date: new Date(),
   };
-  createComment(comment).then((res) => {
-    console.log(res);
+  createComment(comment).then(() => {
     init();
   });
   com.value = "";
+  inputClose.value.val = "";
 };
 
 // 初始化数据

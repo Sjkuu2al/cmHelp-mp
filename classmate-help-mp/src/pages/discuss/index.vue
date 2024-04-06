@@ -29,6 +29,7 @@
         <view class="rContent">{{ rep.rContent }}</view>
       </view> -->
     </view>
+    <view class="createbtn" @click="toCreate()">+</view>
   </view>
 </template>
 
@@ -48,8 +49,11 @@ watch(check, (newVal) => {
     // 最热贴
   }
 });
+let toCreate = () => {
+  uni.navigateTo({ url: "/pages/discussDetail/index?type=2" });
+};
 let openDetail = (id: number) => {
-  uni.navigateTo({ url: `/pages/discussDetail/index?id=${id}` });
+  uni.navigateTo({ url: `/pages/discussDetail/index?type=1&id=${id}` });
 };
 interface discuss {
   date?: null | string;
@@ -166,6 +170,21 @@ onReachBottom(async () => {
         width: 50rpx;
       }
     }
+  }
+  .createbtn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 30px;
+    color: white;
+    position: fixed;
+    top: 85%;
+    left: 75%;
+    height: 100rpx;
+    width: 100rpx;
+    border-radius: 100rpx;
+    box-shadow: 10rpx 5rpx 10rpx rgb(232, 232, 232);
+    background-color: rgb(145, 230, 170);
   }
 }
 </style>

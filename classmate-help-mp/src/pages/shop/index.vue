@@ -8,12 +8,6 @@
           v-model="keyword"
         />
       </view>
-      <!-- <view class="filter-box">
-        <image src="@/static/i-book.png" />
-        <image src="@/static/i-clothes.png" />
-        <image src="@/static/i-phone.png" />
-        <image src="@/static/i-hzp.png" />
-      </view> -->
     </view>
     <view class="shop-list">
       <goodItem

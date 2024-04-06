@@ -20,3 +20,6 @@ export let changeDiscussStatus = (id, status) => {
 export let editDiscuss = (discuss) => {
   return useHttp({ url: "/discuss/edit", data: { discuss }, method: "POST" });
 };
+export let pvDiscuss = (id) => {
+  return useHttp({ url: "/discuss/pv", data: { id } });
+};
