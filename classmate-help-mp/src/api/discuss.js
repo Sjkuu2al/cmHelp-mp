@@ -10,7 +10,7 @@ export let getDiscussDetail = (id) => {
 export let createDiscuss = (discuss) => {
   return useHttp({
     url: "/discuss/create",
-    data: { discuss },
+    data: discuss,
     method: "POST",
   });
 };

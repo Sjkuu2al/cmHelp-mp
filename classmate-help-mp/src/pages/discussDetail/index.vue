@@ -2,23 +2,23 @@
   <view class="discuss-page" v-if="type === '1'">
     <view class="card">
       <view class="intro">
-        <div class="pInfo">
-          <div class="pImg"><image src="/static/11.jpg" /></div>
+        <view class="pInfo">
+          <view class="pImg"><image src="/static/11.jpg" /></view>
           <view class="pUser">{{ form.title }}</view>
-        </div>
+        </view>
 
         <view class="content">{{ form.intro }}</view>
-        <div class="btn-box">
-          <div class="time">{{ form.date }}</div>
-        </div>
+        <view class="btn-box">
+          <view class="time">{{ form.date }}</view>
+        </view>
       </view>
     </view>
 
     <view class="msg">
-      <div class="top-box">
+      <view class="top-box">
         <view class="title">评论区</view>
-        <div class="comment-btn" @click="openCommentDialog()">评论</div>
-      </div>
+        <view class="comment-btn" @click="openCommentDialog()">评论</view>
+      </view>
       <view
         v-if="commentList.length > 0"
         class="msg-box"
@@ -33,7 +33,7 @@
         <view class="content">{{ item.content }}</view>
         <view class="date">{{ item.date }}</view>
       </view>
-      <div class="none-comment" v-else>暂无更多评论</div>
+      <view class="none-comment" v-else>暂无更多评论</view>
     </view>
 
     <view>
@@ -71,22 +71,6 @@
           :style="{ height: '500rpx', width: '100%' }"
         />
       </view>
-
-      <!-- <view class="edit-part">
-        <view class="title">商品图片</view>
-        <view class="upload-image-box">
-          <view class="up-image" v-for="item in form.imgs" :key="item">
-            <image :src="item"></image>
-          </view>
-          <view
-            class="up-image"
-            @click="uploadImg()"
-            v-if="form.imgs.length < 3"
-            >+</view
-          >
-        </view> 
-      </view>-->
-
       <view class="btns">
         <button type="primary" form-type="submit">提交</button>
       </view>
@@ -96,7 +80,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
-import { getDiscussDetail, pvDiscuss } from "@/api/discuss.js";
+import { getDiscussDetail, pvDiscuss ,createDiscuss} from "@/api/discuss.js";
 import {
   getCommentByOid,
   createComment,
@@ -191,17 +175,10 @@ let formSubmit = () => {
     imgs: JSON.stringify(form.value.imgs),
     status: 1,
   };
-  if (data.title && data.intro && data.price) {
-    if (type.value === "0") {
-      console.log("1313123213");
-      editGood(data).then((res) => {
-        if (res) {
-          uni.showToast({ title: "编辑成功", duration: 3000 });
-          uni.navigateBack();
-        }
-      });
-    } else {
-      createGood(data).then((res) => {
+  if (data.title && data.intro) {
+    if (type.value === "2") {
+      
+      createDiscuss(data).then((res) => {
         if (res) {
           uni.showToast({ title: "新增成功", duration: 3000 });
           uni.navigateBack();

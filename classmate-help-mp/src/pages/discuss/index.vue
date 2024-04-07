@@ -1,36 +1,32 @@
 <template>
   <view class="discuss-list">
-    <div class="type-bar">
-      <div :class="check === 1 ? 'check tab' : 'tab'" @click="changeCheck(1)">
+    <view class="type-bar">
+      <view :class="check === 1 ? 'check tab' : 'tab'" @click="changeCheck(1)">
         最新
-      </div>
-      <div :class="check === 2 ? 'check tab' : 'tab'" @click="changeCheck(2)">
+      </view>
+      <view :class="check === 2 ? 'check tab' : 'tab'" @click="changeCheck(2)">
         热议
-      </div>
-    </div>
+      </view>
+    </view>
     <view
       class="card"
       v-for="item in discussList"
       :key="item.id"
       @click="openDetail(item.id)"
     >
-      <div class="pInfo">
-        <div class="pImg"><image src="@/static/11.jpg" /></div>
+      <view class="pInfo">
+        <view class="pImg"><image src="@/static/11.jpg" /></view>
         <view class="pUser">{{ item.ownerName }}</view>
-      </div>
+      </view>
 
       <view class="pContent">{{ item.title }}</view>
       <view class="comment">
         <image src="@/static/i-comment.png"></image>
         <view class="comment-count">33</view>
       </view>
-      <!-- <view class="reply" v-for="(rep, idx) in item.replyArr" :key="idx">
-        <view class="rUser">{{ rep.rUser }}</view>
-        <view class="rContent">{{ rep.rContent }}</view>
       </view> -->
     </view>
     <view class="createbtn" @click="toCreate()">+</view>
-  </view>
 </template>
 
 <script setup lang="ts">
@@ -79,7 +75,7 @@ onMounted(async () => {
     res.forEach((item: any) => {
       discussList.value.push(item);
     });
-    console.log("discussList.value :>> ", discussList.value);
+   
   });
 });
 onReachBottom(async () => {

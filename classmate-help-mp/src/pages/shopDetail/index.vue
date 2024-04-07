@@ -21,10 +21,10 @@
     </swiper>
 
     <view class="msg">
-      <div class="top-box">
+      <view class="top-box">
         <view class="title">评论区</view>
-        <div class="comment-btn" @click="openCommentDialog()">评论</div>
-      </div>
+        <view class="comment-btn" @click="openCommentDialog()">评论</view>
+      </view>
       <view
         v-if="commentList.length > 0"
         class="msg-box"
@@ -39,7 +39,7 @@
         <view class="content">{{ item.content }}</view>
         <view class="date">{{ item.date }}</view>
       </view>
-      <div class="none-comment" v-else>暂无更多评论</div>
+      <view class="none-comment" v-else>暂无更多评论</view>
     </view>
     <view>
       <!-- 输入框示例 -->

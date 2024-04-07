@@ -6,14 +6,14 @@
       <view class="price">￥{{ price }}</view>
       <view class="info">{{ intro }}</view>
     </view>
-    <div class="live" v-if="edit">
+    <view class="live" v-if="edit">
       <button
         @click.stop="changeStatus(status)"
         :type="status === 1 ? 'warn' : 'primary'"
       >
         {{ status === 1 ? "下架" : "上架" }}
       </button>
-    </div>
+    </view>
   </view>
 </template>
 <script setup lang="ts">
