@@ -57,17 +57,18 @@ let changeType= (value: number) => {
 // 搜索款
 let keyword = ref('123')
 
-
+// 获取讨论列表
 
 // 最新、最热帖切换
 watch(check, (newVal) => {
-  console.log(newVal);
-  if (newVal === 1) {
-    // 最新帖
-  } else if (newVal === 2) {
-    // 最热贴
-  }
+  
 });
+// 最新、最热帖切换
+watch(type, (newVal) => {
+  
+});
+
+
 let toCreate = () => {
   uni.navigateTo({ url: "/pages/discussDetail/index?type=2" });
 };
@@ -116,6 +117,7 @@ onReachBottom(async () => {
   } else {
   }
 });
+
 </script>
 
 <style lang="scss" scoped>
