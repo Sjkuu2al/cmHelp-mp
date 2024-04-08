@@ -54,11 +54,23 @@ let changeType= (value: number) => {
   type.value = value;
 };
 
+
 // 搜索款
 let keyword = ref('123')
 
 // 获取讨论列表
+let getListData = async (init) => {
+  if(init){
+    page.pageNum = 0,
+    page.pageSize = 5
+  }
+  await getDiscussList(page.pageNum, page.pageSize).then((res: any) => {
+    res.forEach((item: any) => {
+      discussList.value.push(item);
+    });
 
+  });
+}
 // 最新、最热帖切换
 watch(check, (newVal) => {
   
@@ -90,7 +102,7 @@ interface discuss {
 let discussList = ref<discuss[]>([]);
 let page = {
   pageNum: 0,
-  pageSize: 5,
+  pageSize: 5, 
 };
 let haveMore = true;
 let status = ref<string>("more");
