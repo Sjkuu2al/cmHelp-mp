@@ -4,8 +4,13 @@
       <div class="left">
         <view class="search-box">
           <input class="search-input" placeholder="请输入关键词" v-model="keyword" />
-          <uni-button type="primary">搜索</uni-button>
+          <button type="primary">搜索</button>
         </view>
+        <div class="type-box">
+          <div :class="type === 1 ? 'check-type type' : 'type'"  @click="changeType(1)">悬赏求助</div>
+          <div :class="type === 2 ? 'check-type type' : 'type'" @click="changeType(2)" >失物招领</div>
+          <div :class="type === 3 ? 'check-type type' : 'type'" @click="changeType(3)" >吐槽议论</div>
+        </div>
       </div>
       <view class="right">
         <view :class="check === 1 ? 'check tab' : 'tab'" @click="changeCheck(1)">
@@ -40,8 +45,13 @@ import { onMounted, ref, watch } from "vue";
 import { getDiscussList } from "@/api/discuss.js";
 import { onShow, onReachBottom } from "@dcloudio/uni-app";
 let check = ref<number>(1);
+
 let changeCheck = (value: number) => {
   check.value = value;
+};
+let type = ref<number>(1);
+let changeType= (value: number) => {
+  type.value = value;
 };
 
 // 搜索款
@@ -120,7 +130,7 @@ onReachBottom(async () => {
     display: grid;
     grid-template-columns: 8fr 2fr;
     height: 160rpx;
-    gap: 40rpx;
+    gap: 30rpx;
 
     .left {
       display: grid;
@@ -148,6 +158,22 @@ onReachBottom(async () => {
           font-size: 24rpx
         }
       }
+      .type-box{
+        padding:20rpx;
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        .type{
+          padding: 10rpx;
+          border:1rpx solid gray;
+          border-radius: 10rpx;
+          color:rgb(161, 161, 161);
+        }
+        .check-type{
+          background-color: rgb(102, 181, 247);
+          color: white;
+        }
+      }
     }
 
     .right {
@@ -165,7 +191,7 @@ onReachBottom(async () => {
       }
 
       .check {
-        background-color: rgb(166, 166, 245);
+        background-color: rgb(102, 181, 247);
         color: white;
       }
 
