@@ -21,7 +21,7 @@
       <view class="discuss-list">
         <view
           class="card"
-          v-for="item in list"
+          v-for="item in list1"
           :key="item.id"
           @click="openDetail(item.id)"
         >
@@ -50,6 +50,27 @@ let list = [
     pContent: "明天什么时候开学?",
     CommentCount: 19,
   },
+  {
+    id: 3,
+    pUser: "sikuu",
+    pContent: "现在车可以开进学校吗？",
+    CommentCount: 4,
+  },
+];
+let list1 = [
+  {
+    id: 4,
+    pUser: "发表者",
+    pContent: "学校哪个饭堂的菜更好吃啊",
+    CommentCount: 9,
+  },
+  {
+    id: 5,
+    pUser: "sikuu",
+    pContent: "求借一件白衬衫拍毕业照，有偿！",
+    CommentCount: 12,
+  },
+
 ];
 let openDetail = (id: number) => {
   uni.navigateTo({ url: `/pages/discussDetail/index?id=${id}` });

@@ -152,11 +152,11 @@ onLoad((e) => {
   if (e?.id) id.value = e.id;
   if (id.value) {
     init();
+    pvDiscuss(id.value);
   }
 });
 let init = () => {
   commentList.value = [];
-  pvDiscuss(id.value);
   getDiscussDetail(id.value).then((res) => {
     res.date = res.date.substring(0, 10);
     form.value = res;
