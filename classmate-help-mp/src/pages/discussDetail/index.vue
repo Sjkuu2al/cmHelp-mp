@@ -63,10 +63,24 @@
         />
       </view>
       <view class="edit-part">
+        <view class="title">分类</view>
+        <radio-group @change="radioChange">
+          <label class="radio">
+            <radio value="1" :checked="form.type === '1'" />悬赏求助
+          </label>
+          <label class="radio">
+            <radio value="2" :checked="form.type === '2'" />失物招领
+          </label>
+          <label class="radio">
+            <radio value="3" :checked="form.type === '3'" />吐槽议论
+          </label>
+        </radio-group>
+      </view>
+      <view class="edit-part">
         <view class="title">内容</view>
         <textarea
           v-model="form.intro"
-          placeholder="请输入商品简介"
+          placeholder="请输入帖子内容"
           class="line"
           :style="{ height: '500rpx', width: '100%' }"
         />
@@ -80,7 +94,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
-import { getDiscussDetail, pvDiscuss ,createDiscuss} from "@/api/discuss.js";
+import { getDiscussDetail, pvDiscuss, createDiscuss } from "@/api/discuss.js";
 import {
   getCommentByOid,
   createComment,
@@ -96,6 +110,7 @@ interface discuss {
   isDelete?: number | null;
   ownerId?: number | null;
   ownerName?: null | string;
+  type?: String | null;
   status?: number | null;
   title?: null | string;
   view?: number | null;
@@ -103,7 +118,13 @@ interface discuss {
 }
 let id = ref();
 let type = ref();
-let form = ref<discuss>({});
+let form = ref<discuss>({
+  ownerId: 1,
+  ownerName: "sikuu",
+  title: "",
+  intro: "",
+  type: "1",
+});
 // 评论
 let targetComment;
 let commentList = ref([]);
@@ -168,16 +189,18 @@ let init = () => {
     });
   });
 };
-
+let radioChange = (e: any) => {
+  form.value.type = e.detail.value;
+};
 let formSubmit = () => {
+  console.log("form :>> ", form);
   let data = {
     ...form.value,
-    imgs: JSON.stringify(form.value.imgs),
     status: 1,
   };
+  console.log("data :>> ", data);
   if (data.title && data.intro) {
     if (type.value === "2") {
-      
       createDiscuss(data).then((res) => {
         if (res) {
           uni.showToast({ title: "新增成功", duration: 3000 });

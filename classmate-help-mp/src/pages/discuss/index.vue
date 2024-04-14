@@ -3,26 +3,56 @@
     <div class="topbar">
       <div class="left">
         <view class="search-box">
-          <input class="search-input" placeholder="请输入关键词" v-model="keyword" />
-          <button type="primary">搜索</button>
+          <input
+            class="search-input"
+            placeholder="请输入关键词"
+            v-model="title"
+          />
+          <button type="primary" @click="selectData">搜索</button>
         </view>
         <div class="type-box">
-          <div :class="type === 1 ? 'check-type type' : 'type'"  @click="changeType(1)">悬赏求助</div>
-          <div :class="type === 2 ? 'check-type type' : 'type'" @click="changeType(2)" >失物招领</div>
-          <div :class="type === 3 ? 'check-type type' : 'type'" @click="changeType(3)" >吐槽议论</div>
+          <div
+            :class="type === 1 ? 'check-type type' : 'type'"
+            @click="changeType(1)"
+          >
+            悬赏求助
+          </div>
+          <div
+            :class="type === 2 ? 'check-type type' : 'type'"
+            @click="changeType(2)"
+          >
+            失物招领
+          </div>
+          <div
+            :class="type === 3 ? 'check-type type' : 'type'"
+            @click="changeType(3)"
+          >
+            吐槽议论
+          </div>
         </div>
       </div>
       <view class="right">
-        <view :class="check === 1 ? 'check tab' : 'tab'" @click="changeCheck(1)">
+        <view
+          :class="check === 1 ? 'check tab' : 'tab'"
+          @click="changeCheck(1)"
+        >
           最新
         </view>
-        <view :class="check === 2 ? 'check tab' : 'tab'" @click="changeCheck(2)">
+        <view
+          :class="check === 2 ? 'check tab' : 'tab'"
+          @click="changeCheck(2)"
+        >
           热议
         </view>
       </view>
     </div>
     <!--  -->
-    <view class="card" v-for="item in discussList" :key="item.id" @click="openDetail(item.id)">
+    <view
+      class="card"
+      v-for="item in discussList"
+      :key="item.id"
+      @click="openDetail(item.id)"
+    >
       <view class="pInfo">
         <view class="pImg">
           <image src="@/static/11.jpg" />
@@ -31,10 +61,10 @@
       </view>
 
       <view class="pContent">{{ item.title }}</view>
-      <view class="comment">
+      <!-- <view class="comment">
         <image src="@/static/i-comment.png"></image>
         <view class="comment-count">33</view>
-      </view>
+      </view> -->
     </view>
   </view>
   <view class="createbtn" @click="toCreate()">+</view>
@@ -50,37 +80,43 @@ let changeCheck = (value: number) => {
   check.value = value;
 };
 let type = ref<number>(1);
-let changeType= (value: number) => {
+let changeType = (value: number) => {
   type.value = value;
 };
 
-
 // 搜索款
-let keyword = ref('123')
+let title = ref("");
 
 // 获取讨论列表
 let getListData = async (init) => {
-  if(init){
-    page.pageNum = 0,
-    page.pageSize = 5
+  if (init) {
+    page.pageNum = 0;
+    page.pageSize = 5;
+    discussList.value.length = 0;
   }
-  await getDiscussList(page.pageNum, page.pageSize).then((res: any) => {
+  await getDiscussList(
+    page.pageNum,
+    page.pageSize,
+    type.value,
+    check.value,
+    title.value ? title.value : ""
+  ).then((res: any) => {
     res.forEach((item: any) => {
       discussList.value.push(item);
     });
-
   });
-}
+};
 // 最新、最热帖切换
 watch(check, (newVal) => {
-  
+  getListData(true);
 });
-// 最新、最热帖切换
+// 类型切换
 watch(type, (newVal) => {
-  
+  getListData(true);
 });
-
-
+let selectData = () => {
+  getListData(true);
+};
 let toCreate = () => {
   uni.navigateTo({ url: "/pages/discussDetail/index?type=2" });
 };
@@ -102,34 +138,23 @@ interface discuss {
 let discussList = ref<discuss[]>([]);
 let page = {
   pageNum: 0,
-  pageSize: 5, 
+  pageSize: 5,
 };
 let haveMore = true;
 let status = ref<string>("more");
 onMounted(async () => {
-  await getDiscussList(page.pageNum, page.pageSize).then((res: any) => {
-    res.forEach((item: any) => {
-      discussList.value.push(item);
-    });
-
-  });
+  getListData(true);
 });
 onReachBottom(async () => {
   if (haveMore) {
     status.value = "loading";
     page.pageNum++;
-    await getDiscussList(page.pageNum, page.pageSize).then((res: any) => {
-      res.forEach((item: any) => {
-        item.imgs = JSON.parse(item.imgs);
-        discussList.value.push(item);
-      });
-    });
+    getListData(false);
     status.value = "nomore";
     haveMore = false;
   } else {
   }
 });
-
 </script>
 
 <style lang="scss" scoped>
@@ -165,25 +190,24 @@ onReachBottom(async () => {
           border: 2px solid rgb(223, 223, 223);
           background-color: rgb(240, 239, 239);
           padding-left: 40rpx;
-   
         }
-        button{
+        button {
           height: 100%;
-          font-size: 24rpx
+          font-size: 24rpx;
         }
       }
-      .type-box{
-        padding:20rpx;
+      .type-box {
+        padding: 20rpx;
         display: flex;
         justify-content: space-evenly;
         align-items: center;
-        .type{
+        .type {
           padding: 10rpx;
-          border:1rpx solid gray;
+          border: 1rpx solid gray;
           border-radius: 10rpx;
-          color:rgb(161, 161, 161);
+          color: rgb(161, 161, 161);
         }
-        .check-type{
+        .check-type {
           background-color: rgb(102, 181, 247);
           color: white;
         }
@@ -223,7 +247,7 @@ onReachBottom(async () => {
     border-radius: 10rpx;
     box-shadow: 10rpx 5rpx 10rpx rgb(232, 232, 232);
     padding: 10rpx 10rpx 30rpx 10rpx;
-
+    margin-top: 30rpx;
     .pInfo {
       display: flex;
       align-items: center;
@@ -266,21 +290,20 @@ onReachBottom(async () => {
       }
     }
   }
-
-  .createbtn {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 30px;
-    color: white;
-    position: fixed;
-    top: 85%;
-    left: 75%;
-    height: 100rpx;
-    width: 100rpx;
-    border-radius: 100rpx;
-    box-shadow: 10rpx 5rpx 10rpx rgb(232, 232, 232);
-    background-color: rgb(145, 230, 170);
-  }
+}
+.createbtn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 30px;
+  color: white;
+  position: fixed;
+  top: 85%;
+  left: 75%;
+  height: 100rpx;
+  width: 100rpx;
+  border-radius: 100rpx;
+  box-shadow: 10rpx 5rpx 10rpx rgb(232, 232, 232);
+  background-color: rgb(145, 230, 170);
 }
 </style>

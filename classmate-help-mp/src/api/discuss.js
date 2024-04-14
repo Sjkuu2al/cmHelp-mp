@@ -1,7 +1,10 @@
 import { useHttp } from "../utils/request";
 
-export let getDiscussList = (pageNum, pageSize) => {
-  return useHttp({ url: "/discuss/getList", data: { pageNum, pageSize } });
+export let getDiscussList = (pageNum, pageSize, type, check, title) => {
+  return useHttp({
+    url: "/discuss/getList",
+    data: { pageNum, pageSize, type, check, title },
+  });
 };
 
 export let getDiscussDetail = (id) => {
