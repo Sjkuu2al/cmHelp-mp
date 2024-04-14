@@ -81,16 +81,16 @@
         <view class="title">品类</view>
         <radio-group @change="radioChange">
           <label class="radio">
-            <radio value="0" :checked="form.type === 0" />教材
+            <radio value="1" :checked="form.type === 1" />教材
           </label>
           <label class="radio">
-            <radio value="1" :checked="form.type === 1" />衣物
+            <radio value="2" :checked="form.type === 2" />衣物
           </label>
           <label class="radio">
-            <radio value="2" :checked="form.type === 2" />电子
+            <radio value="3" :checked="form.type === 3" />电子
           </label>
           <label class="radio">
-            <radio value="3" :checked="form.type === 3" />其他
+            <radio value="4" :checked="form.type === 4" />其他
           </label>
         </radio-group>
       </view>
@@ -153,7 +153,7 @@ interface formType {
 let form = ref<formType>({
   owner: 1,
   title: "",
-  type: 0,
+  type: 1,
   intro: "",
   imgs: [],
 });

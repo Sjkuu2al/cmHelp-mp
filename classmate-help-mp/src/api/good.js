@@ -1,7 +1,10 @@
 import { useHttp } from "../utils/request";
 
-export let getGoodList = (pageNum, pageSize) => {
-  return useHttp({ url: "/good/getList", data: { pageNum, pageSize } });
+export let getGoodList = (pageNum, pageSize, type, title) => {
+  return useHttp({
+    url: "/good/getList",
+    data: { pageNum, pageSize, type, title },
+  });
 };
 export let getGoodListById = (owner) => {
   return useHttp({ url: "/good/getListById", data: { owner } });

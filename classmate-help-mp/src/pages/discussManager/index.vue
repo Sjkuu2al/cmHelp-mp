@@ -8,10 +8,11 @@
           :key="item.id"
           @click="openDetail(item.id)"
         >
-          <view class="pContent">{{ item.pContent }}</view>
+          <view class="pContent">{{ item.title }}</view>
           <view class="comment">
-            <image src="@/static/i-comment.png"></image>
-            <view class="comment-count">{{ item.CommentCount }}</view>
+            <button @click.stop="changeStatus(item.id, 0)" type="warn">
+              {{ "删除" }}
+            </button>
           </view>
         </view>
       </view>
@@ -25,10 +26,11 @@
           :key="item.id"
           @click="openDetail(item.id)"
         >
-          <view class="pContent">{{ item.pContent }}</view>
+          <view class="pContent">{{ item.title }}</view>
           <view class="comment">
-            <image src="@/static/i-comment.png"></image>
-            <view class="comment-count">{{ item.CommentCount }}</view>
+            <button @click.stop="changeStatus(item.id, 1)" type="primary">
+              {{ "恢复" }}
+            </button>
           </view>
         </view>
       </view>
@@ -37,44 +39,47 @@
 </template>
 
 <script setup lang="ts">
-let list = [
-  {
-    id: 1,
-    pUser: "发表者",
-    pContent: "有人知道计算机三班的课表吗?",
-    CommentCount: 23,
-  },
-  {
-    id: 2,
-    pUser: "sikuu",
-    pContent: "明天什么时候开学?",
-    CommentCount: 19,
-  },
-  {
-    id: 3,
-    pUser: "sikuu",
-    pContent: "现在车可以开进学校吗？",
-    CommentCount: 4,
-  },
-];
-let list1 = [
-  {
-    id: 4,
-    pUser: "发表者",
-    pContent: "学校哪个饭堂的菜更好吃啊",
-    CommentCount: 9,
-  },
-  {
-    id: 5,
-    pUser: "sikuu",
-    pContent: "求借一件白衬衫拍毕业照，有偿！",
-    CommentCount: 12,
-  },
+import { getDiscussListByUserId, changeDiscussStatus } from "@/api/discuss.js";
+import { onMounted, ref } from "vue";
 
-];
-let openDetail = (id: number) => {
-  uni.navigateTo({ url: `/pages/discussDetail/index?id=${id}` });
+let getList = () => {
+  list.value.length = 0;
+  list1.value.length = 0;
+  getDiscussListByUserId(1).then((res) => {
+    res.forEach((item) => {
+      if (item.status === 1) {
+        list.value.push(item);
+      } else {
+        list1.value.push(item);
+      }
+    });
+  });
 };
+let changeStatus = (id, status) => {
+  uni.showModal({
+    title: `是否确认更改当前帖子状态?`,
+    cancelText: "取消",
+    confirmText: "确认",
+    success: async (ans) => {
+      if (ans.confirm) {
+        changeDiscussStatus(id, status).then((res) => {
+          getList();
+        });
+      } else {
+        return;
+      }
+    },
+  });
+};
+
+let list = ref([]);
+let list1 = ref([]);
+let openDetail = (id: number) => {
+  uni.navigateTo({ url: `/pages/discussDetail/index?type=1&id=${id}` });
+};
+onMounted(() => {
+  getList();
+});
 </script>
 
 <style lang="scss" scoped>
@@ -86,8 +91,8 @@ let openDetail = (id: number) => {
   gap: 40rpx;
   .card {
     width: 100%;
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
     background-color: rgba(241, 249, 250, 0.904);
     border-radius: 10rpx;
     box-shadow: 10rpx 5rpx 10rpx rgb(232, 232, 232);

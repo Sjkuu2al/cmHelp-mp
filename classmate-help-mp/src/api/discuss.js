@@ -7,6 +7,13 @@ export let getDiscussList = (pageNum, pageSize, type, check, title) => {
   });
 };
 
+export let getDiscussListByUserId = (id) => {
+  return useHttp({
+    url: "/discuss/getByUserId",
+    data: { id },
+  });
+};
+
 export let getDiscussDetail = (id) => {
   return useHttp({ url: "/discuss/getById	", data: { id } });
 };
